@@ -1,59 +1,35 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: htomas-d <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/09/08 13:16:49 by htomas-d          #+#    #+#              #
-#    Updated: 2022/09/19 10:04:50 by htomas-d         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME		=	minishell
 
-NAME		= minishell
+HEADER		=	./include/
 
-SRCS		= $(wildcard srcs/*.c)
+LIBFT		=	lib/libft.a
 
-OBJS		= $(SRCS:%.c=%.o)
+CC			=	gcc
 
-LIBFTA		= ./libft/libft.a
+CFLAGS		= -Werror -Wall -Wextra -g -I $(HEADER)  -fsanitize=address
 
-RM		= rm -f
+SRCS		=	$(wildcard ./srcs/*.c)
 
-CC		= gcc -Wall -Wextra -Werror #-g -fsanitize=address
+OBJS		=	$(SRCS:.c=.o)
 
-.c.o:
-			@$(CC) -c $< -o $@
+all			:	$(NAME)
 
-all:		$(NAME)
+$(NAME)		:	$(OBJS) $(LIBFT) $(HEADER)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
 
-$(NAME): 	$(LIBFTA) $(OBJS)
-			@echo "$(BLUE)Compiling . . . . . . .$(DEFAULT)"
-			$(CC) $(OBJS) $(LIBFTA) -o $(NAME)
-			@echo "$(GREEN)Successfully built --> $(YELLOW)$(NAME)$(DEFAULT)"
+$(LIBFT)	:
+				make -C ./lib
 
-$(LIBFTA):
-			@make -C libft
+clean		:
+				rm -rf $(OBJS)
+				make clean -C ./lib
+				
+run			: $(all)
+				./minishell
 
-clean:
-			$(RM) $(OBJS)
 
-fclean:		clean
-			$(RM) $(NAME)
-			make -C libft fclean
-			@echo "$(RED)Files Removed!$(DEFAULT)"
+fclean		:	clean
+				rm $(NAME)
+				make fclean -C ./lib
 
-re:			fclean all
-
-god:
-			git status
-			git add .
-			git commit -m "random Makefile commit😋"
-
-.PHONY:		all clean re fclean
-
-#COLORS
-GREEN = \033[1;32m
-RED = \033[1;31m
-DEFAULT = \033[0m
-YELLOW = \033[1;33m
+re			:	fclean all
