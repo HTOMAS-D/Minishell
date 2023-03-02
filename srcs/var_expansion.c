@@ -24,7 +24,7 @@ int	ft_is_var_from_expansion(char *str, t_vars *vars)
 		&& (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i \
 				+ 1] == '?') && str[i + 1] != '\'' && str[i + 1] != '"'))
 	{
-		if (str && (str - 1) && (str - 2) && (*str - 2) == '$' && *(str
+		if (*(str - 2) && *(str - 1) && *str && (*str - 2) == '$' && *(str
 				- 1) == '?')
 			return (0);
 		else
@@ -32,6 +32,29 @@ int	ft_is_var_from_expansion(char *str, t_vars *vars)
 	}
 	return (0);
 }
+
+
+
+/*int ft_is_var_from_expansion(char *str, t_vars *vars)
+{
+    int i;
+
+    i = 0;
+    ft_get_quotes_inner_outer(*(str + i), vars);
+    if (((vars->outer_quote == 0 && vars->inner_quote == 0)
+            || (vars->inner_quote == 0 && vars->outer_quote == 2)
+            || (vars->outer_quote == 2 && vars->inner_quote == 1))
+        && (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '?') && str[i + 1] != '\'' && str[i + 1] != '"'))
+    {
+        if ((str - 2) && (*str - 2) == '$' && *(str - 1) == '?')
+            return (0);
+        else if (str && (str - 1) && (str - 2) && *(str - 2) == '$'
+        && *(str - 1) != '?' && (*(str - 1) == '{' || ft_isalnum(*(str - 1)) || *(str - 1) == '_')) 
+    		return (1);
+	}
+    return (0);
+}*/
+
 
 t_vars	ft_exp_helper(t_vars v, char *str)
 {
