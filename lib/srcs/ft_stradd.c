@@ -16,7 +16,7 @@ void	ft_stradd(char **str, char *add)
 {
 	int	i;
 
-	if (*str == NULL)
+	if (!str || !add)
 		return ;
 	i = 0;
 	while ((*str)[i])
